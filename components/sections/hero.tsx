@@ -13,7 +13,10 @@ export function Hero() {
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const { phase } = useIntro();
   const phaseRef = useRef(phase);
-  phaseRef.current = phase;
+
+  useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
 
   useGSAP(
     () => {

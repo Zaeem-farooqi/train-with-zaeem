@@ -4,7 +4,8 @@ import {
   createContext,
   useContext,
   useEffect,
-  useState,
+  useRef,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import Lenis from "lenis";
@@ -17,6 +18,26 @@ export function useLenis() {
   return useContext(LenisContext);
 }
 
+type LenisListener = () => void;
+
+const lenisStore = {
+  instance: null as Lenis | null,
+  listeners: new Set<LenisListener>(),
+  get() {
+    return this.instance;
+  },
+  set(next: Lenis | null) {
+    this.instance = next;
+    this.listeners.forEach((listener) => listener());
+  },
+  subscribe(listener: LenisListener) {
+    this.listeners.add(listener);
+    return () => {
+      this.listeners.delete(listener);
+    };
+  },
+};
+
 /**
  * Smooth scroll driven by gsap.ticker so Lenis and ScrollTrigger
  * share one frame loop. Native scroll is used (no transform hijack),
@@ -24,9 +45,18 @@ export function useLenis() {
  */
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const { phase } = useIntro();
-  const [lenis, setLenis] = useState<Lenis | null>(null);
+  const started = useRef(false);
+
+  const lenis = useSyncExternalStore(
+    (onStoreChange) => lenisStore.subscribe(onStoreChange),
+    () => lenisStore.get(),
+    () => null,
+  );
 
   useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const instance = new Lenis({
@@ -50,13 +80,14 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     const refresh = () => ScrollTrigger.refresh();
     window.addEventListener("load", refresh);
 
-    setLenis(instance);
+    lenisStore.set(instance);
 
     return () => {
       window.removeEventListener("load", refresh);
       gsap.ticker.remove(onTick);
       instance.destroy();
-      setLenis(null);
+      lenisStore.set(null);
+      started.current = false;
     };
   }, []);
 

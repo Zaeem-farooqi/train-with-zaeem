@@ -1,7 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { gsap } from "@/lib/gsap";
+
+function subscribePointerMode(onChange: () => void) {
+  const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  fine.addEventListener("change", onChange);
+  reduced.addEventListener("change", onChange);
+  return () => {
+    fine.removeEventListener("change", onChange);
+    reduced.removeEventListener("change", onChange);
+  };
+}
+
+function getPointerMode() {
+  return (
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
 
 /**
  * Desktop-only cursor. Position is applied with quickTo (transform only).
@@ -10,20 +28,19 @@ import { gsap } from "@/lib/gsap";
 export function CustomCursor() {
   const dot = useRef<HTMLDivElement>(null);
   const ring = useRef<HTMLDivElement>(null);
-  const [enabled, setEnabled] = useState(false);
+  const enabled = useSyncExternalStore(subscribePointerMode, getPointerMode, () => false);
 
   useEffect(() => {
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!fine || reduced) return;
+    if (!enabled) {
+      document.documentElement.classList.remove("has-cursor");
+      return;
+    }
 
-    setEnabled(true);
     document.documentElement.classList.add("has-cursor");
-
     return () => {
       document.documentElement.classList.remove("has-cursor");
     };
-  }, []);
+  }, [enabled]);
 
   useEffect(() => {
     if (!enabled || !dot.current || !ring.current) return;

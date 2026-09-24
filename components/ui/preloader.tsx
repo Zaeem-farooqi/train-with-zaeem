@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import { site } from "@/config/site";
 import { gsap, useGSAP } from "@/lib/gsap";
@@ -9,15 +9,10 @@ import { useIntro } from "@/lib/intro";
 export function Preloader() {
   const root = useRef<HTMLDivElement>(null);
   const { phase, setPhase } = useIntro();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useGSAP(
     () => {
-      if (!mounted || phase === "ready") return;
+      if (phase === "ready") return;
 
       const el = root.current;
       if (!el) return;
@@ -45,7 +40,7 @@ export function Preloader() {
         tl.kill();
       };
     },
-    { scope: root, dependencies: [mounted, phase] },
+    { scope: root, dependencies: [phase] },
   );
 
   if (phase === "ready") return null;
