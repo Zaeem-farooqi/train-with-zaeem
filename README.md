@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Train with Zaeem
 
-## Getting Started
+Personal trainer site for Zaeem. In person and online. This pass is the foundation: design system, GSAP + Lenis, the hero, and a pinned horizontal section for diet, workouts, independence, online training, and online consultations.
 
-First, run the development server:
+## Setup
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+No environment variables are required yet. When the booking form is added, create `.env.local`:
+
+```bash
+RESEND_API_KEY=
+BOOKING_TO_EMAIL=
+BOOKING_FROM_EMAIL=
+```
+
+## Edit content
+
+- `config/site.ts` — name, tagline, availability, Instagram, WhatsApp, hero copy, CTAs
+- `config/content.ts` — “What’s different” points and image paths
+- `public/images/` — swap placeholder photos. Each image in `config/content.ts` has a TODO where a real client photo should go.
+
+The secondary hero button says “See results” and currently scrolls to `#difference`. Point it at `#results` once that section exists.
+
+## Motion
+
+- Plugins are registered once in `lib/gsap.ts`.
+- Lenis runs on `gsap.ticker` in `lib/lenis.tsx` and updates ScrollTrigger.
+- Animations use `@gsap/react` `useGSAP`. Cleanup reverts `gsap.matchMedia()` and kills timelines created in that hook.
+- `prefers-reduced-motion` skips the preloader, pinning, and text reveals.
+- Desktop pins the approach section. Phones stack the three points with a lighter fade so the page stays usable from Instagram.
+
+## Scripts
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
+npm run lint
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
