@@ -25,7 +25,7 @@ export const hero = {
   headline: "I train\nand teach.",
   lede: "Online training anywhere. Physical training in Lahore and Islamabad. Custom diet plans and workouts you learn to run yourself.",
   primaryCta: { label: "Book a session" },
-  secondaryCta: { label: "See results", href: "#difference" },
+  secondaryCta: { label: "See plans", href: "#plans" },
 } as const;
 
 export const nav = {

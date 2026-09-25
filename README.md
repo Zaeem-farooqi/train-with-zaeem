@@ -13,6 +13,7 @@ npm run dev
 
 - `config/site.ts` — brand, contact, hero copy
 - `config/content.ts` — horizontal section cards and images
+- `config/plans.ts` — plan prices by region (Pakistan, Islamabad, international)
 - `public/images/` — swap placeholder photos
 - `public/brand/logo.png` — logo
 

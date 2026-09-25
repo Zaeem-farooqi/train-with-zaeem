@@ -8,6 +8,7 @@
   --muted: #9a9a94;
   --lime: #ccff00;
   --line: rgba(243, 241, 234, 0.16);
+  --header-h: 4.25rem;
   --background: var(--bg);
   --foreground: var(--ink);
 }
@@ -27,6 +28,7 @@
 
 html {
   scroll-behavior: auto;
+  scroll-padding-top: calc(var(--header-h) + 0.75rem);
   background: var(--bg);
   overflow-x: clip;
 }
@@ -98,5 +100,221 @@ body {
   [data-panel] {
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+/* Ambient fitness motifs — continuous, low-key loops */
+@keyframes motif-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes motif-dumbbell {
+  0%,
+  100% {
+    transform: rotate(-18deg) translateY(4px);
+  }
+  50% {
+    transform: rotate(18deg) translateY(-6px);
+  }
+}
+
+@keyframes motif-runner-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes motif-runner-stride {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(12deg);
+  }
+}
+
+@keyframes motif-runner-stride-alt {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-14deg);
+  }
+}
+
+@keyframes motif-rope-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-14px);
+  }
+  55% {
+    transform: translateY(2px);
+  }
+}
+
+@keyframes motif-rope-spin {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -180;
+  }
+}
+
+@keyframes motif-pulse-draw {
+  0% {
+    stroke-dashoffset: 180;
+    opacity: 0.35;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.45;
+  }
+}
+
+@keyframes plate-fall {
+  0% {
+    transform: translateY(-120%) rotate(-12deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  55% {
+    transform: translateY(0) rotate(4deg);
+    opacity: 1;
+  }
+  62% {
+    transform: translateY(-10%) rotate(-3deg);
+  }
+  72% {
+    transform: translateY(0) rotate(2deg);
+  }
+  82%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.85;
+  }
+}
+
+@keyframes plate-impact-ring {
+  0%,
+  50% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  58% {
+    transform: scale(0.7);
+    opacity: 0.7;
+  }
+  78% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.motif {
+  animation: motif-float 6s ease-in-out infinite;
+}
+
+.motif-dumbbell {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: motif-dumbbell 2.4s ease-in-out infinite;
+}
+
+.motif-runner {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: motif-runner-bob 0.55s ease-in-out infinite;
+}
+
+.motif-runner-leg-f,
+.motif-runner-arm-b {
+  transform-box: fill-box;
+  transform-origin: top center;
+  animation: motif-runner-stride 0.55s ease-in-out infinite;
+}
+
+.motif-runner-leg-b,
+.motif-runner-arm-f {
+  transform-box: fill-box;
+  transform-origin: top center;
+  animation: motif-runner-stride-alt 0.55s ease-in-out infinite;
+}
+
+.motif-rope {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: motif-rope-bounce 0.85s ease-in-out infinite;
+}
+
+.motif-rope-cord {
+  stroke-dasharray: 90;
+  animation: motif-rope-spin 1.1s linear infinite;
+}
+
+.motif-pulse {
+  stroke-dasharray: 180;
+  animation: motif-pulse-draw 2.2s ease-in-out infinite;
+}
+
+.plate-drop {
+  transform-origin: center bottom;
+  animation: plate-fall 3.6s cubic-bezier(0.22, 0.8, 0.28, 1) infinite;
+}
+
+.plate-drop .plate-drop-body {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.plate-drop .plate-impact {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: plate-impact-ring 3.6s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motif,
+  .motif-dumbbell,
+  .motif-runner,
+  .motif-runner-leg-f,
+  .motif-runner-leg-b,
+  .motif-runner-arm-f,
+  .motif-runner-arm-b,
+  .motif-rope,
+  .motif-rope-cord,
+  .motif-pulse,
+  .plate-drop,
+  .plate-drop .plate-impact {
+    animation: none !important;
+  }
+
+  .plate-drop {
+    opacity: 0.35;
+    transform: none;
   }
 }

@@ -197,7 +197,7 @@ export function Difference() {
   return (
     <section id={difference.id} ref={root} className="relative bg-bg text-ink">
       <div ref={pin} className="relative h-svh overflow-hidden">
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-4 px-4 pt-[max(1.25rem,env(safe-area-inset-top))] sm:px-6 md:px-10 md:pt-8 lg:px-16">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-4 px-4 pt-[calc(var(--header-h)+0.35rem)] sm:px-6 md:px-10 lg:px-16">
           <p className="text-[0.65rem] tracking-[0.24em] text-lime uppercase sm:text-[0.7rem] sm:tracking-[0.28em]">
             {difference.eyebrow}
           </p>
