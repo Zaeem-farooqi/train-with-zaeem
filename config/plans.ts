@@ -2,9 +2,9 @@
  * Plan copy and region pricing.
  * Amounts are whole currency units (PKR or USD).
  *
- * International rates sit in the mid online-coaching band for custom
- * plan delivery (roughly $49–$89 for plan-only, market mid for combo).
- * Personal training stays Pakistan-only (Lahore / Islamabad).
+ * International rates are premium USD one-time fees for custom
+ * plan delivery ($99 / $99 / $179). Personal training stays
+ * Pakistan-only (Lahore / Islamabad).
  */
 
 export type PlanId = "diet" | "workout" | "combo" | "personal";
@@ -71,12 +71,12 @@ const islamabadPrices: Record<PlanId, number> = {
 
 /**
  * International rates (USD), one-time plan fees.
- * Anchored to common online coaching bands for custom plan delivery.
+ * Premium vs Pakistan PKR rates — custom online plan delivery.
  */
 const internationalPrices: Record<Exclude<PlanId, "personal">, number> = {
-  diet: 49,
-  workout: 49,
-  combo: 89,
+  diet: 99,
+  workout: 99,
+  combo: 179,
 };
 
 export const regionPricing = {
